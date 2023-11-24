@@ -1,12 +1,5 @@
---upgrade
 altair
-numpy
-pandas
 pydeck
 streamlit
-pytz
 fyers-api
-requests
-datetime
-os
 fyers-apiv2
