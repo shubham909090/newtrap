@@ -15,14 +15,14 @@ import streamlit as st
 
 st.title('My trap trading program')
 
-client_id1 = st.text_input("Client ID", "Q55X3K2LKQ-100")
+client_id = st.text_input("Client ID", "Q55X3K2LKQ-100")
 secret_key1 = st.text_input("Secret Key", "1CB3H0D61U")
 redirect_uri1 = st.text_input("Redirect URI", "https://koolcart.in")
 
 def get_access_token():
  access_token = None # Initialize access_token to None
  if not os.path.exists("access_token.txt"):
-     session=accessToken.SessionModel(client_id=client_id1,secret_key=secret_key1,redirect_uri=redirect_uri1,response_type="code", grant_type="authorization_code")
+     session=accessToken.SessionModel(client_id=client_id,secret_key=secret_key1,redirect_uri=redirect_uri1,response_type="code", grant_type="authorization_code")
      response = session.generate_authcode()
      st.write("Login URL: ", response)
      auth_codeF = st.text_input("Enter auth code:")
@@ -45,7 +45,7 @@ def get_access_token():
 
  return access_token
 
-fyers = fyersModel.FyersModel(client_id=client_id1, token=get_access_token(),log_path="")
+fyers = fyersModel.FyersModel(client_id=client_id, token=get_access_token(),log_path="")
 
 
 # Get the current date in IST
