@@ -16,17 +16,16 @@ import streamlit as st
 st.title('My trap trading program')
 
 client_id = st.text_input("Client ID", "Q55X3K2LKQ-100")
-secret_key1 = st.text_input("Secret Key", "1CB3H0D61U")
-redirect_uri1 = st.text_input("Redirect URI", "https://koolcart.in")
+secret_key = st.text_input("Secret Key", "1CB3H0D61U")
+redirect_uri = st.text_input("Redirect URI", "https://koolcart.in")
 
 def get_access_token():
  access_token = None # Initialize access_token to None
  if not os.path.exists("access_token.txt"):
-     session=accessToken.SessionModel(client_id=client_id,secret_key=secret_key1,redirect_uri=redirect_uri1,response_type="code", grant_type="authorization_code")
+     session=accessToken.SessionModel(client_id=client_id,secret_key=secret_key,redirect_uri=redirect_uri,response_type="code", grant_type="authorization_code")
      response = session.generate_authcode()
      st.write("Login URL: ", response)
-     auth_codeF = st.text_input("Enter auth code:")
-     auth_code = auth_codeF
+     auth_code = st.text_input("Enter auth code:")
      session.set_token(auth_code)
      try:
          token_response = session.generate_token()
