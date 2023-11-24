@@ -8,3 +8,4 @@ fyers-api
 requests
 datetime
 os
+fyers-apiv2
