@@ -14,10 +14,13 @@ import streamlit as st
 
 
 st.title('My trap trading program')
+#client_id = st.text_input("Client ID", "Q55X3K2LKQ-100")
+#secret_key = st.text_input("Secret Key", "1CB3H0D61U")
+#redirect_uri = st.text_input("Redirect URI", "https://koolcart.in")
 
-client_id = st.text_input("Client ID", "Q55X3K2LKQ-100")
-secret_key = st.text_input("Secret Key", "1CB3H0D61U")
-redirect_uri = st.text_input("Redirect URI", "https://koolcart.in")
+client_id = 'Q55X3K2LKQ-100'
+secret_key = '1CB3H0D61U'
+redirect_uri = 'https://koolcart.in'
 
 def get_access_token():
  access_token = None # Initialize access_token to None
