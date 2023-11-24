@@ -4,4 +4,7 @@ pandas
 pydeck
 streamlit
 pytz
-fyers-apiv2
+fyers-api
+requests
+datetime
+os
