@@ -22,20 +22,20 @@ redirect_uri = st.text_input("Redirect URI", "https://koolcart.in")
 
 def get_access_token():
     if st.button('Generate Auth Code'):
-            session = accessToken.SessionModel(client_id=client_id, secret_key=secret_key, redirect_uri=redirect_uri, response_type="code", grant_type="authorization_code")
-            response = session.generate_authcode()
-            st.write("Login URL: ", response)
+        session = accessToken.SessionModel(client_id_value=client_id, secret_key_value=secret_key, redirect_uri_value=redirect_uri, response_type="code", grant_type="authorization_code")
+        response = session.generate_authcode()
+        st.write("Login URL: ", response)
         
-            auth_code = st.text_input("Enter auth code:")
-            if auth_code:
-                    session.set_token(auth_code)
-                    token_response = session.generate_token()
-                    access_token = token_response["access_token"]
-                    return access_token
+        auth_code = st.text_input("Enter auth code:")
+        if auth_code:
+            session.set_token(auth_code)
+            token_response = session.generate_token()
+            access_token = token_response["access_token"]
+            return access_token
 
-
-fyers = fyersModel.FyersModel(client_id=client_id, token=get_access_token(),log_path="")
-
+access_token = get_access_token()
+if access_token:
+    fyers = fyersModel.FyersModel(client_id=client_id, token=access_token, log_path="")
 
 # Get the current date in IST
 current_date = datetime.datetime.now(pytz.timezone('Asia/Kolkata')).date()
