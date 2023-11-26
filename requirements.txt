@@ -1,7 +1,8 @@
+fyers-apiv2
 altair
 pydeck
 streamlit
-fyers-api
+
 
 
 
