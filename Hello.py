@@ -20,10 +20,10 @@ client_id = st.text_input("Client ID", "Q55X3K2LKQ-100")
 secret_key = st.text_input("Secret Key", "1CB3H0D61U")
 redirect_uri = st.text_input("Redirect URI", "https://koolcart.in")
 
-
+@st.cache(suppress_st_warning=True)
 def get_access_token():
     if st.button('Generate Auth Code'):
-        session = accessToken.SessionModel(client_id="Q55X3K2LKQ-100", secret_key=secret_key, redirect_uri=redirect_uri, response_type="code", grant_type="authorization_code")
+        session = accessToken.SessionModel(client_id=client_id, secret_key=secret_key, redirect_uri=redirect_uri, response_type="code", grant_type="authorization_code")
         response = session.generate_authcode()
         st.write("Login URL: ", response)
         
