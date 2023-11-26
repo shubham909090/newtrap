@@ -20,9 +20,10 @@ client_id = st.text_input("Client ID", "Q55X3K2LKQ-100")
 secret_key = st.text_input("Secret Key", "1CB3H0D61U")
 redirect_uri = st.text_input("Redirect URI", "https://koolcart.in")
 
+
 def get_access_token():
     if st.button('Generate Auth Code'):
-        session = accessToken.SessionModel(client_id_value=client_id, secret_key_value=secret_key, redirect_uri_value=redirect_uri, response_type="code", grant_type="authorization_code")
+        session = accessToken.SessionModel(client_id="Q55X3K2LKQ-100", secret_key=secret_key, redirect_uri=redirect_uri, response_type="code", grant_type="authorization_code")
         response = session.generate_authcode()
         st.write("Login URL: ", response)
         
@@ -36,6 +37,7 @@ def get_access_token():
 access_token = get_access_token()
 if access_token:
     fyers = fyersModel.FyersModel(client_id=client_id, token=access_token, log_path="")
+
 
 # Get the current date in IST
 current_date = datetime.datetime.now(pytz.timezone('Asia/Kolkata')).date()
