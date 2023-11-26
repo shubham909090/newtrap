@@ -95,7 +95,7 @@ if st.button('Stop', key='stop_button'):
 if st.button('Start', key='start_button'):
         st.session_state.running = True
 
-while st.session_state.running:
+while 'running' in st.session_state and st.session_state.running:
     #check for the curront time in epoch
     current_time = int(datetime.datetime.now(pytz.timezone('Asia/Kolkata')).timestamp())
     # if curront time is = to trigger time go ahead
