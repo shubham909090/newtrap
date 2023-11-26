@@ -21,29 +21,22 @@ redirect_uri = st.text_input("Redirect URI", "https://koolcart.in")
 
 
 def get_access_token():
- access_token = None # Initialize access_token to None
- if not os.path.exists("access_token.txt"):
-     session=accessToken.SessionModel(client_id=client_id,secret_key=secret_key,redirect_uri=redirect_uri,response_type="code", grant_type="authorization_code")
-     response = session.generate_authcode()
-     st.write("Login URL: ", response)
-     auth_code = st.text_input("Enter auth code:")
-     session.set_token(auth_code)
-     try:
-         token_response = session.generate_token()
-         access_token = token_response["access_token"]
-     except KeyError:
-         st.write("Error: 'access_token' key not found in token response.")
-         st.write("Token response: ", token_response)
-     except Exception as e:
-         st.write("Error generating token: ", e)
-     if access_token is not None: # Check if access_token is not None before writing to file
-         with open("access_token.txt","w") as f:
-             f.write(access_token)
- else:
-     with open("access_token.txt","r") as f:
-         access_token=f.read()
+    if not os.path.exists("access_token.txt"):
 
- return access_token
+        session=accessToken.SessionModel(client_id=client_id1,secret_key=secret_key1,redirect_uri=redirect_uri1,response_type="code", grant_type="authorization_code")
+        response = session.generate_authcode()
+        print("login url :", response)
+        st.write("Login URL: ", response)
+        auth_code = st.text_input("Enter auth code:")
+        session.set_token(auth_code)
+        access_token = session.generate_token()["access_token"]
+        with open("access_token.txt","w") as f:
+            f.write(access_token)
+    else:
+        with open("access_token.txt","r") as f:
+            access_token=f.read()
+
+    return access_token
 
 fyers = fyersModel.FyersModel(client_id=client_id, token=get_access_token(),log_path="")
 
