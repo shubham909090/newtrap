@@ -8,13 +8,13 @@ import os
 import datetime
 import pytz
 import requests
-import json
+import cred
 
 count=0
 
-client_id1="Q55X3K2LKQ-100"
-secret_key1="1CB3H0D61U"
-redirect_uri1="https://koolcart.in"
+client_id1=cred.client_id
+secret_key1=cred.secret_key
+redirect_uri1=cred.redirect_uri
 
 def get_access_token():
     if not os.path.exists("access_token.txt"):
@@ -36,15 +36,13 @@ def get_access_token():
 fyers = fyersModel.FyersModel(client_id=client_id1, token=get_access_token(),log_path="")
 
 
-# Get the current date in IST
 current_date = datetime.datetime.now(pytz.timezone('Asia/Kolkata')).date()
 
-# Create a datetime object for 9:15:00 AM of the current day in IST
 target_time = datetime.datetime.combine(current_date, datetime.time(9, 20, 0))
-end_time =datetime.datetime.combine(current_date, datetime.time(10, 0, 0))
-
-# Convert the datetime object to epoch time
+endf_time = datetime.datetime.combine(current_date, datetime.time(10, 0, 0))
 epoch_time = int(target_time.timestamp())
+end_time = int(endf_time.timestamp())
+
 
 
 
@@ -58,7 +56,7 @@ symbols = {'NSE:APOLLOHOSP-EQ': {'dhigh': None, 'dlow': None, 'lp': None},'NSE:R
 trade_taken_symbols = set()
 crossed_dlow_symbols = set()
 
-# Telegram Bot API token and chat ID
+# Telegram Bot
 telegram_token = '6157727579:AAF3SW7-IXO6Tiba-yvYGDtDz0K_7_LWd8c'
 telegram_chat_id = '857279506'
 
@@ -73,17 +71,17 @@ def send_telegram_message(message):
         print('Failed to send Telegram message')
 
 while True:
-    #check for the curront time in epoch
+   
     current_time = int(datetime.datetime.now(pytz.timezone('Asia/Kolkata')).timestamp())
-    # if curront time is = to trigger time go ahead
+    
     if current_time >= epoch_time :
-        #take data from fyers
+        #
         mydata = fyers.quotes(data=data)
         for symbol in symbols:
             if symbol in trade_taken_symbols:
-                #loop skiped if it's not found in the set()
+                
                 continue
-            #if symbol dlow and dhigh are empty, then take the value from fyers data and put it, but this will only happen 1 time as, condition is "if none"
+
             if symbols[symbol]['dlow'] is None and symbols[symbol]['dhigh'] is None:
                 for item in mydata.get('d', []):
                     if item['n'] == symbol:
@@ -92,6 +90,7 @@ while True:
                         break
                     
             #takeing ltp value continuasly from fyers
+
             for item in mydata.get('d', []):
                 if item['n'] == symbol:
                     symbols[symbol]['lp'] = item['v']['lp']
@@ -104,7 +103,7 @@ while True:
                         #print(f"{symbols[symbol]['lp']} < {symbols[symbol]['dlow']} and {newhigh} == {symbols[symbol]['dhigh']}")
                         crossed_dlow_symbols.add(symbol)
                     # trade taken, but here above loop already told us that ltp is now below the low anymore and above condition will be skipped and this will be exicuted
-                    if symbol in crossed_dlow_symbols and symbols[symbol]['lp'] > symbols[symbol]['dhigh'] and (symbols[symbol]['dhigh']-symbols[symbol]['dlow'])<=(symbols[symbol]['lp']*1/100) and (symbols[symbol]['dlow']-newlow)<=(symbols[symbol]['lp']*1/100):
+                    if symbol in crossed_dlow_symbols and symbols[symbol]['lp'] > symbols[symbol]['dhigh'] and (symbols[symbol]['dhigh']-symbols[symbol]['dlow'])<=(symbols[symbol]['lp']*1/100) and (symbols[symbol]['dlow']-newlow)<=(symbols[symbol]['lp']*0.5/100) and current_time <end_time:
                         print("Trade taken for symbol:", symbol) 
                         send_telegram_message(f"BUY Trade taken for symbol from trap buying: {symbol}")
                         datas = {
